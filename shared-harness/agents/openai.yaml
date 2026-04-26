@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shared Harness"
+  short_description: "Bridge Claude Code and Codex workflows"
+  default_prompt: "Use $shared-harness to audit and sync Claude Code and Codex shared workflow posture."

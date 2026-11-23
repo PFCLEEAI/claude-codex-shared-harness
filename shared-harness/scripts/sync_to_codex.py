@@ -39,6 +39,7 @@ class Report(TypedDict):
     unchanged: list[str]
     skipped: list[str]
     commands: list[str]
+    adapted: list[str]
     backups: list[str]
     source_digest: str
 
@@ -126,7 +127,7 @@ def main() -> None:
     skill = Path(__file__).resolve().parents[1]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     report: Report = {"linked": [], "unchanged": [], "skipped": [],
-                      "commands": [], "backups": [], "source_digest": ""}
+                      "commands": [], "adapted": [], "backups": [], "source_digest": ""}
     for source in sorted(sources.iterdir()):
         if source.is_symlink() and not source.exists():
             report["skipped"].append(f"{source}: broken source link; existing Codex entry preserved")
@@ -153,6 +154,16 @@ def main() -> None:
         if name == "shared-harness":
             report["skipped"].append(f"{source}: legacy mirror preserved; repository skill is canonical")
             source = skill
+        if not entry.read_text().startswith("---\n"):
+            description = re.search(r"## Description\n(.+)", entry.read_text())
+            summary = description[1][:900] if description else f"Use the shared {name} workflow."
+            source = home / ".codex/shared-harness/adapters" / name
+            content = (f"---\nname: {name}\ndescription: {json.dumps(summary)}\n---\n\n"
+                       f"Read `{skill / 'references/codex-compatibility.md'}`.\n"
+                       f"Read and follow the LIVE skill at `{entry}`.\n"
+                       f"Resolve its relative scripts and resources from `{entry.parent}`.\n")
+            write(source / "SKILL.md", content, home, stamp, report)
+            report["adapted"].append(f"{name}: added Codex metadata; skill body stays in {entry}")
         target = home / ".agents/skills" / name
         link(source, target, home, stamp, report)
         legacy = home / ".codex/skills" / name

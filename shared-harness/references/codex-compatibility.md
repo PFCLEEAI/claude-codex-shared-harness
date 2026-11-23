@@ -4,6 +4,10 @@ The source skill and command bodies stay in Claude's directories. Treat tool
 spelling and runtime hooks as implementation details to translate, not capabilities
 that become available by sharing a file.
 
+`auto-improve` has no YAML frontmatter in its Claude source. Codex uses a small
+metadata adapter that reads the original body at invocation; source-relative
+resources still resolve from the Claude skill directory. No source edit is needed.
+
 - `Read`, `Write`, `Edit`, `Bash`, `Grep`, and `Glob`: use Codex filesystem,
   patch, command, and search tools. `AskUserQuestion`: use the available user
   question tool or ask in conversation. `$ARGUMENTS` is the user's supplied input.

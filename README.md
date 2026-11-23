@@ -47,6 +47,7 @@ Requires Python 3.11 or newer. Claude's tree is read-only. Compatible skills are
 symlinked into `~/.agents/skills`; command adapters read `~/.claude/commands/*.md`
 live rather than copying their bodies. Nested skills are flattened and duplicate
 names prefer the top-level source. The bridge skill points to this repository.
+Skills without YAML frontmatter receive a metadata adapter reading the live body.
 Existing Codex collisions are moved to `~/.codex/shared-harness/backups/` with
 `.bak-<timestamp>` suffixes, outside skill discovery roots. Matching reverse
 links are kept to avoid cycles. Reruns preserve matching links and instructions.

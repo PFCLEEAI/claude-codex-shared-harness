@@ -37,6 +37,35 @@ python3 ~/.codex/skills/shared-harness/scripts/validate_shared_harness.py
 
 ## Usage
 
+### Share Claude's skills and context with Codex
+
+```bash
+./sync-to-codex.sh
+```
+
+Requires Python 3.11 or newer. Claude's tree is read-only. Compatible skills are
+symlinked into `~/.agents/skills`; command adapters read `~/.claude/commands/*.md`
+live rather than copying their bodies. Nested skills are flattened and duplicate
+names prefer the top-level source. The bridge skill points to this repository.
+Existing Codex collisions are moved to `~/.codex/shared-harness/backups/` with
+`.bak-<timestamp>` suffixes, outside skill discovery roots. Matching reverse
+links are kept to avoid cycles. Reruns preserve matching links and instructions.
+
+The managed section in `~/.codex/AGENTS.md` references global Claude instructions,
+all rules, the shared memory index and project `_pm/` handoffs. It preserves the
+GBrain block. References are explicit read instructions, not automatic imports.
+The report is `~/.codex/shared-harness/sync-report.json`; it includes linked,
+unchanged, adapted, skipped and backed-up paths. No GBrain/LazyCodex installation,
+Claude settings, authentication or session logs are copied or changed.
+
+Read [Codex compatibility notes](shared-harness/references/codex-compatibility.md)
+for tool translation and skipped workflows. Existing Claude stop hooks are not
+installed into Codex, so Codex performs `_pm/` handoffs explicitly. MCP parity is
+checked separately with `claude mcp list` and `codex mcp list`; this sync never
+changes MCP config. `SHARED_HARNESS_HOME` can select an isolated home for checks.
+
+### Legacy Codex-to-Claude mirror
+
 Run a read-only status audit:
 
 ```bash

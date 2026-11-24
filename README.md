@@ -11,6 +11,7 @@ SEO keywords: Claude Code, OpenAI Codex, Codex CLI, Claude Code skills, Codex sk
 - Checks Claude and Codex MCP config posture without starting MCP servers.
 - Validates skill frontmatter, mirror drift, wrapper install state, and lazy MCP behavior.
 - Documents `_pm/` memory, PM lanes, handoffs, file ownership, and sync rules.
+- Provides `pm-project` for project setup, session resumption, and GitHub CI checks.
 
 ## What It Does Not Do
 
@@ -36,6 +37,23 @@ python3 ~/.codex/skills/shared-harness/scripts/validate_shared_harness.py
 ```
 
 ## Usage
+
+### Coordinate a project across sessions
+
+Install the standalone command with Python 3.9 or newer:
+
+```sh
+mkdir -p ~/.local/bin
+install -m 755 shared-harness/scripts/pm_project.py ~/.local/bin/pm-project
+```
+
+From a project directory, use `pm-project init` to add the shared notes and
+`pm-project resume` to read the handoff and first unchecked step. For an open
+pull request, use `pm-project checks --watch` from its branch. The
+[coordinator runbook](shared-harness/references/pm-coordinator.md) covers worker
+dispatch, test evidence, CI, and deployment.
+
+### Audit the shared harness
 
 Run a read-only status audit:
 
@@ -87,6 +105,7 @@ shared-harness/
   agents/openai.yaml
   scripts/
     harness_status.py
+    pm_project.py
     sync_shared_harness.py
     validate_shared_harness.py
   references/
@@ -96,6 +115,7 @@ shared-harness/
     handoff-template.md
     mcp-posture.md
     pm-memory-contract.md
+    pm-coordinator.md
 install.sh
 ```
 

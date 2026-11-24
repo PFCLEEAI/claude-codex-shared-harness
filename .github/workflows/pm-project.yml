@@ -1,0 +1,38 @@
+name: PM project
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Project workflow tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+
+  install:
+    name: Install and resume rehearsal
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Install and run the command in a clean directory
+        run: |
+          pilot="$(mktemp -d)"
+          mkdir -p "$pilot/bin" "$pilot/project"
+          install -m 755 shared-harness/scripts/pm_project.py "$pilot/bin/pm-project"
+          "$pilot/bin/pm-project" init "$pilot/project"
+          "$pilot/bin/pm-project" resume "$pilot/project" | tee "$pilot/resume.txt"
+          grep -F 'M1 Define the first milestone' "$pilot/resume.txt"

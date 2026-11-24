@@ -3,11 +3,14 @@
 Use this structure for implementation, review, or test lane results:
 
 ```md
-# <Lane> Handoff: Shared Harness
+# <Milestone and task> handoff
 
 ## Outcome
 
-- shipped | blocked | needs follow-up
+- Result: passed | failed | blocked
+- Worktree and branch:
+- Base and tested commit:
+- Pull request or CI run:
 
 ## Changed Paths
 
@@ -15,7 +18,8 @@ Use this structure for implementation, review, or test lane results:
 
 ## Checks Run
 
-- `<command>`: pass | fail | not run
+- `<command>`: pass | fail | skipped
+- Evidence link or failure output:
 
 ## Risks
 

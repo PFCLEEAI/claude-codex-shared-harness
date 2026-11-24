@@ -14,12 +14,12 @@
 
 ## M3 Verify a separate worker handoff
 
-1. [ ] Confirm the local worker resource check passes.
-2. [ ] Dispatch a bounded verification task through Orca and collect the returned handoff. [Worker contract](contracts/M3-worker-resumption.md)
-3. [ ] Use the handoff and checklist to verify resumption from a fresh process.
+1. [x] Confirm the local worker resource check passes before dispatch.
+2. [x] Dispatch a bounded verification task through Orca and collect the returned handoff. [Worker contract](contracts/M3-worker-resumption.md) · [Result](handoffs/M3-worker-resumption.md)
+3. [x] Use the handoff and checklist to verify resumption from a fresh process. The coordinator read the same context line and pending step.
 
 ## M4 Verify PR checks and install rehearsal
 
 1. [x] Run automated tests and exercise CI status handling, including a change to the PR head. Five local tests passed.
-2. [ ] Publish the reviewed branch and open a draft pull request for the change.
-3. [ ] Verify CI and the install rehearsal for the PR revision and record the evidence.
+2. [x] Publish the reviewed branch and open a [draft pull request](https://github.com/PFCLEEAI/claude-codex-shared-harness/pull/1).
+3. [x] Verify CI and the install rehearsal for the PR revision. Both jobs passed on `d9ce310`. [Run](https://github.com/PFCLEEAI/claude-codex-shared-harness/actions/runs/45307238829)
